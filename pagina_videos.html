@@ -29,8 +29,9 @@
             <p-menu ref="menu" :model="itensMenu" class="menuVersatil"/>
         </div>
         <h2>Abaixo está nossos vídeos explicativos do sistema</h2>
-        <div style="border: #00000010 solid; padding: 2vw;" v-for="(video, index) in videosData">
-            <h3>{{ video.nome }}</h3> 
+
+        <div style="border: #00000010 solid; padding: 2vw;" v-for="(video, index) in videosData" :key="video.index">
+            <h3>{{ video.nome }}<p-button label="Apagar" @click="apagarVideo(video.id)"/></h3> 
             
             <iframe width="560" height="315" :src="video.url.replace('https://youtu.be/','https://www.youtube.com/embed/')" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -60,6 +61,15 @@
                 videos: [{ id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' } ],
                 videosData: [],
             }
+            },
+            methods: {
+                apagarVideo(id){
+                    axios.get('https://videos.versatilinformatica.com.br/api/?video=delete&id=' + id).then(function (response) {
+                        // handle success
+                        console.log(response);
+                      });
+                      document.location.reload(false);
+                  },
             },
             mounted(){
                 axios
