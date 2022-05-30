@@ -1,46 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adição de vídeos</title>
-    <script src="https://unpkg.com/vue@3"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link href="https://unpkg.com/primevue/resources/themes/lara-light-indigo/theme.css" rel="stylesheet">
-    <link href="https://unpkg.com/primevue/resources/primevue.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/primeicons/primeicons.css" rel="stylesheet">
+  <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-    <script src="https://unpkg.com/primevue/core/core.min.js"></script>
-</head>
-<body>
-<div id="app">{{ message }}</div>
+        <!-- PrimeVue -->
+        <link href="https://unpkg.com/primevue@^3/resources/themes/saga-blue/theme.css" rel="stylesheet" />
+        <link href="https://unpkg.com/primevue@^3/resources/primevue.min.css" rel="stylesheet" />
+        <link href="https://unpkg.com/primeflex@^3/primeflex.min.css" rel="stylesheet" />
+        <link href="https://unpkg.com/primeicons/primeicons.css" rel="stylesheet" />
 
-<script>
-  const { createApp } = Vue;
-  const axios = require('axios');
-  createApp({
-    data() {
-      return {
-        video: []
+        <!-- Dependencies -->
+        <script src="https://unpkg.com/vue@next"></script>
+        <script src="https://unpkg.com/primevue@^3/core/core.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <!-- Demo -->
+        <script src="https://unpkg.com/primevue@^3/badge/badge.min.js"></script>
+
+        <link rel="stylesheet" href="estilo.css"/>
+    </head>
+  <body style="display: flex; justify-content: center;">
+  
+    <div id="app" class="surface-section px-4 py-5 md:px-6 lg:px-8 corpo">
+    <div>
+
+        <p-menu ref="menu" :model="itensMenu" class="menuVersatil"/>
+    </div>
+        
+    
+        <span class="p-float-label" style="margin: 26px;">
+            <p-inputtext id="nome" type="text" v-model="video['nome']" style="width: 40vw"></p-inputtext>
+            <label for="nome">Nome do vídeo</label>
+        </span>
+        <span class="p-float-label" style="margin: 26px;">
+            <p-inputtext id="nome" type="text" v-model="video['url']" style="width: 40vw"></p-inputtext>
+            <label for="nome">Url do vídeo</label>
+        </span>
+      
+        <p-button style="margin: 26px;" label="Enviar" v-on:click="enviarVideo()"></p-button>
+
+        <Transition>
+            <div class="toastEstilo" :class="{apagar: apagarToast}">
+                <p-badge :value="mensagem" size="xlarge" severity="success"></p-badge>
+            </div>
+      </Transition>
+    </div>
+  </body>
+  <script tipe="module">
+
+    const { createApp, ref } = Vue;
+    const BadgeDirective = primevue.badgedirective;
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    createApp({
+        setup(){
+            
+        },
+
+      data() {
+        return {
+            itensMenu:[
+                {
+					label: 'Adicionar',
+					icon: 'pi pi-external-link',
+					url: 'index.html'
+				},
+                {
+					label: 'Lista de Vídeos',
+					icon: 'pi pi-external-link',
+					url: 'pagina_videos.html'
+				},
+            ],
+          video: [],
+          mensagem: "Vídeo enviado com sucesso",
+          timerCount: '30',
+          apagarToast: true,
+        }
       },
-      methods:{
-          enviarVideo(){
-            axios.get('https://videos.versatilinformatica.com.br/api/?video=post&nome="'.video['nome'].'"&url="'.video['url'].'"').then(function (response) {
-                // handle success
-                console.log(response);
-              })
-              .catch(function (error) {
-                // handle error
-                console.log(error);
-              })
-              .then(function () {
-                // always executed
-              });
-          }
-      }
-    }
-  }).mount('#app')
-</script>
-</body>
+      methods: {
+            enviarVideo(){
+              axios.get('https://videos.versatilinformatica.com.br/api/?video=post&nome="' + this.video['nome'] + '"&url="' + this.video['url'] + '"').then(function (response) {
+                  // handle success
+                  console.log(response);
+                });
+                this.apagarToast = false
+                this.video['nome'] = ''
+                this.video['url'] = ''
+            },
+
+           
+
+        },
+        components: {
+                "p-button": primevue.button,
+                "p-inputtext": primevue.inputtext,
+                "p-badge": primevue.badge,
+                "p-menu": primevue.menu,
+            },
+
+    }).use(primevue.config.default).use(primevue.toastservice).mount('#app')
+  </script>
+  
 </html>

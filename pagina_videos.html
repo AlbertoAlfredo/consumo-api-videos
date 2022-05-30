@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protal do cliente - Vídeos</title>
-    <script src="https://unpkg.com/vue@3"></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <!-- PrimeVue -->
+    <link href="https://unpkg.com/primevue@^3/resources/themes/saga-blue/theme.css" rel="stylesheet" />
+    <link href="https://unpkg.com/primevue@^3/resources/primevue.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/primeflex@^3/primeflex.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/primeicons/primeicons.css" rel="stylesheet" />
+
+    <!-- Dependencies -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/primevue@^3/core/core.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- Demo -->
+    <script src="https://unpkg.com/primevue@^3/badge/badge.min.js"></script>
+
+    <link rel="stylesheet" href="estilo.css"/>
 </head>
-<body>
+<body style="display: flex; justify-content: center;">
     
-    <div style="border: #00000010 solid; margin:2vw; box-shadow: 5px 5px 15px 5px #00000050; padding:2vw;" id="app">
+    <div style="border: #00000010 solid; margin:2vw; box-shadow: 5px 5px 15px 5px #00000050; padding:2vw;" id="app" class="corpo">
+        <div>
+
+            <p-menu ref="menu" :model="itensMenu" class="menuVersatil"/>
+        </div>
         <h2>Abaixo está nossos vídeos explicativos do sistema</h2>
         <div style="border: #00000010 solid; padding: 2vw;" v-for="(video, index) in videosData">
             <h3>{{ video.nome }}</h3> 
@@ -27,6 +44,18 @@
         createApp({
             data() {
             return {
+                itensMenu:[
+                {
+					label: 'Adicionar',
+					icon: 'pi pi-external-link',
+					url: 'index.html'
+				},
+                {
+					label: 'Lista de Vídeos',
+					icon: 'pi pi-external-link',
+					url: 'pagina_videos.html'
+				},
+            ],
                 info: null,
                 videos: [{ id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' } ],
                 videosData: [],
@@ -40,8 +69,14 @@
                     console.log(this.listDataString);
                     return response; 
                 })
-            }
-        }).mount('#app')
+            },
+            components: {
+                "p-button": primevue.button,
+                "p-inputtext": primevue.inputtext,
+                "p-badge": primevue.badge,
+                "p-menu": primevue.menu,
+            },
+        }).use(primevue.config.default).use(primevue.toastservice).mount('#app')
     </script>
 </body>
 </html>

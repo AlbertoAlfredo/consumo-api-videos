@@ -1,0 +1,23 @@
+
+  .corpo{
+        width: 100%;
+        margin: 5vw;
+        box-shadow: 5px 5px 15px 5px #00000050; 
+        padding:2vw;
+
+  }
+    .toastEstilo{
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: block;
+    }
+    .apagar{
+        display: none;
+    }
+    .menuVersatil ul{
+        display:flex;
+    }
+    .p-menu .p-menuitem-link{
+        width: 200px !important;
+    }
