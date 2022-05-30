@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protal do cliente - Vídeos</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    
+    <div style="border: #00000010 solid; margin:2vw; box-shadow: 5px 5px 15px 5px #00000050; padding:2vw;" id="app">
+        <h2>Abaixo está nossos vídeos explicativos do sistema</h2>
+        <div style="border: #00000010 solid; padding: 2vw;" v-for="(video, index) in videosData">
+            <h3>{{ video.nome }}</h3> 
+            
+            <iframe width="560" height="315" :src="video.url.replace('https://youtu.be/','https://www.youtube.com/embed/')" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+        </div>
+        <div>{{info}}</div>
+    </div>
+    
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+            return {
+                info: null,
+                videos: [{ id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' } ],
+                videosData: [],
+            }
+            },
+            mounted(){
+                axios
+                .get('https://videos.versatilinformatica.com.br/api/?video=get')
+                .then(response => {
+                    this.videosData = response.data;
+                    console.log(this.listDataString);
+                    return response; 
+                })
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
