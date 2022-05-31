@@ -18,6 +18,8 @@
 
     <!-- Demo -->
     <script src="https://unpkg.com/primevue@^3/badge/badge.min.js"></script>
+    <script src="https://unpkg.com/primevue@^3/accordion/accordion.min.js"></script>
+    <script src="https://unpkg.com/primevue@^3/accordiontab/accordiontab.min.js"></script>
 
     <link rel="stylesheet" href="estilo.css"/>
 </head>
@@ -33,8 +35,13 @@
         <div style="border: #00000010 solid; padding: 2vw;" v-for="(video, index) in videosData" :key="video.index">
             <h3>{{ video.nome }}<p-button label="Apagar" @click="apagarVideo(video.id)"/></h3> 
             
-            <iframe width="560" height="315" :src="video.url.replace('https://youtu.be/','https://www.youtube.com/embed/')" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+            <p-accordion :active-index="1">
+                <p-accordiontab :header="video.nome">
+                    <h3>{{ video.nome }}</h3> 
+            
+                    <iframe width="560" height="315" :src="video.url.replace('https://youtu.be/','https://www.youtube.com/embed/')" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </p-accordiontab>
+            </p-accordion>
         </div>
         <div>{{info}}</div>
     </div>
@@ -85,6 +92,8 @@
                 "p-inputtext": primevue.inputtext,
                 "p-badge": primevue.badge,
                 "p-menu": primevue.menu,
+                "p-accordion": primevue.accordion,
+                "p-accordiontab": primevue.accordiontab,
             },
         }).use(primevue.config.default).use(primevue.toastservice).mount('#app')
     </script>
