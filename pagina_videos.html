@@ -29,10 +29,19 @@
         <div>
 
             <p-menu ref="menu" :model="itensMenu" class="menuVersatil"/>
+            
         </div>
         <h2>Abaixo está nossos vídeos explicativos do sistema</h2>
+        <span class="p-float-label" style="margin: 26px;">
+            <p-inputtext id="nome" type="text" v-model="search" style="width: 40vw"></p-inputtext>
+            <label for="nome">Buscar</label>
+        </span>
+        <div>
 
-        <div style="border: #00000010 solid; padding: 2vw;" v-for="(video, index) in videosData" :key="video.index">
+            <p-menu ref="menu" :model="buscarMenu" class="menuVersatil"/>
+            
+        </div>
+        <div style="border: #00000010 solid; padding: 2vw;" v-for="(video, index) in filteredItems" :key="video.index">
             <h3>{{ video.nome }}<p-button label="Apagar" @click="apagarVideo(video.id)"/></h3> 
             
             <p-accordion :active-index="1">
@@ -52,6 +61,7 @@
         createApp({
             data() {
             return {
+                search:'',
                 itensMenu:[
                 {
 					label: 'Adicionar',
@@ -63,7 +73,18 @@
 					icon: 'pi pi-external-link',
 					url: 'pagina_videos.html'
 				},
-            ],
+                ],
+                buscarMenu:[
+                {
+					label: 'Cadastro',
+					command:() => {this.search = 'Cadastro'}
+				},
+                {
+					label: 'Configuração',
+					command:() => {this.search = 'Configuração'}
+				},
+                ],
+
                 info: null,
                 videos: [{ id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' }, { id: '1', nome: 'teste', url: 'urlteste' } ],
                 videosData: [],
@@ -87,6 +108,13 @@
                     return response; 
                 })
             },
+            computed: {
+                filteredItems() {
+                  return this.videosData.filter(item => {
+                     return item.nome.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+                  })
+                }
+              },
             components: {
                 "p-button": primevue.button,
                 "p-inputtext": primevue.inputtext,
